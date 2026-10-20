@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 1,
+  "implementations": [
+    {
+      "id": "walt-id",
+      "release": null,
+      "commit": null,
+      "containerDigest": null,
+      "status": "NOT_RUN",
+      "cases": [
+        {
+          "caseId": "happy-path",
+          "executionStatus": "NOT_RUN",
+          "actualDecision": null,
+          "evidence": []
+        },
+        {
+          "caseId": "tampered-claim",
+          "executionStatus": "NOT_RUN",
+          "actualDecision": null,
+          "evidence": []
+        },
+        {
+          "caseId": "expired",
+          "executionStatus": "NOT_RUN",
+          "actualDecision": null,
+          "evidence": []
+        },
+        {
+          "caseId": "wrong-holder-key",
+          "executionStatus": "NOT_RUN",
+          "actualDecision": null,
+          "evidence": []
+        },
+        {
+          "caseId": "untrusted-issuer",
+          "executionStatus": "NOT_RUN",
+          "actualDecision": null,
+          "evidence": []
+        },
+        {
+          "caseId": "missing-required-claim",
+          "executionStatus": "NOT_RUN",
+          "actualDecision": null,
+          "evidence": []
+        },
+        {
+          "caseId": "wrong-course",
+          "executionStatus": "NOT_RUN",
+          "actualDecision": null,
+          "evidence": []
+        },
+        {
+          "caseId": "wrong-nonce",
+          "executionStatus": "NOT_RUN",
+          "actualDecision": null,
+          "evidence": []
+        },
+        {
+          "caseId": "wrong-audience",
+          "executionStatus": "NOT_RUN",
+          "actualDecision": null,
+          "evidence": []
+        },
+        {
+          "caseId": "missing-key-binding",
+          "executionStatus": "NOT_RUN",
+          "actualDecision": null,
+          "evidence": []
+        }
+      ]
+    },
+    {
+      "id": "procivis-one",
+      "release": null,
+      "commit": null,
+      "containerDigest": null,
+      "status": "NOT_RUN",
+      "cases": [
+        {
+          "caseId": "happy-path",
+          "executionStatus": "NOT_RUN",
+          "actualDecision": null,
+          "evidence": []
+        },
+        {
+          "caseId": "tampered-claim",
+          "executionStatus": "NOT_RUN",
+          "actualDecision": null,
+          "evidence": []
+        },
+        {
+          "caseId": "expired",
+          "executionStatus": "NOT_RUN",
+          "actualDecision": null,
+          "evidence": []
+        },
+        {
+          "caseId": "wrong-holder-key",
+          "executionStatus": "NOT_RUN",
+          "actualDecision": null,
+          "evidence": []
+        },
+        {
+          "caseId": "untrusted-issuer",
+          "executionStatus": "NOT_RUN",
+          "actualDecision": null,
+          "evidence": []
+        },
+        {
+          "caseId": "missing-required-claim",
+          "executionStatus": "NOT_RUN",
+          "actualDecision": null,
+          "evidence": []
+        },
+        {
+          "caseId": "wrong-course",
+          "executionStatus": "NOT_RUN",
+          "actualDecision": null,
+          "evidence": []
+        },
+        {
+          "caseId": "wrong-nonce",
+          "executionStatus": "NOT_RUN",
+          "actualDecision": null,
+          "evidence": []
+        },
+        {
+          "caseId": "wrong-audience",
+          "executionStatus": "NOT_RUN",
+          "actualDecision": null,
+          "evidence": []
+        },
+        {
+          "caseId": "missing-key-binding",
+          "executionStatus": "NOT_RUN",
+          "actualDecision": null,
+          "evidence": []
+        }
+      ]
+    }
+  ]
+}

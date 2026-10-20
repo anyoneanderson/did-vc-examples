@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "scenarioId": "training-completion-v1",
+  "cases": [
+    {
+      "id": "happy-path",
+      "name": "通常の一往復",
+      "setup": "正常に発行した証明と正しい保有者鍵で、指定3属性だけを提示する。",
+      "expectedDecision": "ACCEPT",
+      "targetCheck": "all"
+    },
+    {
+      "id": "tampered-claim",
+      "name": "改ざん",
+      "setup": "発行後にcourseIdの開示値をSEC-999へ書き換え、署名と元のダイジェストを保持する。",
+      "expectedDecision": "REJECT",
+      "targetCheck": "integrity"
+    },
+    {
+      "id": "expired",
+      "name": "期限切れ",
+      "setup": "期限切れの時刻条件で正しく署名した証明を、正しい保有者が提示する。",
+      "expectedDecision": "REJECT",
+      "targetCheck": "validity"
+    },
+    {
+      "id": "wrong-holder-key",
+      "name": "別人の鍵",
+      "setup": "元の証明を保持し、別の秘密鍵でKey Bindingの提示証明を作る。",
+      "expectedDecision": "REJECT",
+      "targetCheck": "holder-binding"
+    },
+    {
+      "id": "untrusted-issuer",
+      "name": "信用しない発行者",
+      "setup": "信頼リストにない別発行者が正しく署名した証明を使う。署名検証用の公開鍵は取得可能にする。",
+      "expectedDecision": "REJECT",
+      "targetCheck": "issuer-trust"
+    },
+    {
+      "id": "missing-required-claim",
+      "name": "必須属性なし",
+      "setup": "nameの開示情報を提示から外す。他の要素は正常に作る。",
+      "expectedDecision": "REJECT",
+      "targetCheck": "required-claims"
+    },
+    {
+      "id": "wrong-course",
+      "name": "業務条件不一致",
+      "setup": "SEC-999の修了証を正規発行者が署名し、正しい保有者が提示する。",
+      "expectedDecision": "REJECT",
+      "targetCheck": "business-policy"
+    },
+    {
+      "id": "wrong-nonce",
+      "name": "提示要求の不一致",
+      "setup": "実際の要求と異なるnonceを含むKey Bindingの提示証明を作る。",
+      "expectedDecision": "REJECT",
+      "targetCheck": "request-binding"
+    },
+    {
+      "id": "wrong-audience",
+      "name": "提示先の不一致",
+      "setup": "別の検証者をaudienceとするKey Bindingの提示証明を作る。",
+      "expectedDecision": "REJECT",
+      "targetCheck": "request-binding"
+    },
+    {
+      "id": "missing-key-binding",
+      "name": "保有者確認なし",
+      "setup": "発行者の署名と開示情報はそのままに、Key Bindingの提示証明を付けずに送る。",
+      "expectedDecision": "REJECT",
+      "targetCheck": "holder-binding"
+    }
+  ]
+}

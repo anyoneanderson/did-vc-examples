@@ -1,0 +1,15 @@
+# Local credentials and generated artifacts
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+__pycache__/
+.venv/
+.DS_Store
+runtime/
+artifacts/
+.handover/
+handover.md

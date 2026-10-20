@@ -1,0 +1,111 @@
+{
+  "implementation": null,
+  "release": null,
+  "commit": null,
+  "containerDigest": null,
+  "specVersions": {},
+  "environment": {
+    "os": null,
+    "architecture": null,
+    "runtime": null
+  },
+  "holderKeyStorage": null,
+  "issuerTrustSetup": null,
+  "clockSkewSeconds": null,
+  "startedAt": null,
+  "extraImplementation": [],
+  "externalServices": [],
+  "paidFeatures": [],
+  "cases": [
+    {
+      "caseId": "happy-path",
+      "executionStatus": "NOT_RUN",
+      "actualDecision": null,
+      "observedCheck": null,
+      "command": null,
+      "evidence": [],
+      "notes": null
+    },
+    {
+      "caseId": "tampered-claim",
+      "executionStatus": "NOT_RUN",
+      "actualDecision": null,
+      "observedCheck": null,
+      "command": null,
+      "evidence": [],
+      "notes": null
+    },
+    {
+      "caseId": "expired",
+      "executionStatus": "NOT_RUN",
+      "actualDecision": null,
+      "observedCheck": null,
+      "command": null,
+      "evidence": [],
+      "notes": null
+    },
+    {
+      "caseId": "wrong-holder-key",
+      "executionStatus": "NOT_RUN",
+      "actualDecision": null,
+      "observedCheck": null,
+      "command": null,
+      "evidence": [],
+      "notes": null
+    },
+    {
+      "caseId": "untrusted-issuer",
+      "executionStatus": "NOT_RUN",
+      "actualDecision": null,
+      "observedCheck": null,
+      "command": null,
+      "evidence": [],
+      "notes": null
+    },
+    {
+      "caseId": "missing-required-claim",
+      "executionStatus": "NOT_RUN",
+      "actualDecision": null,
+      "observedCheck": null,
+      "command": null,
+      "evidence": [],
+      "notes": null
+    },
+    {
+      "caseId": "wrong-course",
+      "executionStatus": "NOT_RUN",
+      "actualDecision": null,
+      "observedCheck": null,
+      "command": null,
+      "evidence": [],
+      "notes": null
+    },
+    {
+      "caseId": "wrong-nonce",
+      "executionStatus": "NOT_RUN",
+      "actualDecision": null,
+      "observedCheck": null,
+      "command": null,
+      "evidence": [],
+      "notes": null
+    },
+    {
+      "caseId": "wrong-audience",
+      "executionStatus": "NOT_RUN",
+      "actualDecision": null,
+      "observedCheck": null,
+      "command": null,
+      "evidence": [],
+      "notes": null
+    },
+    {
+      "caseId": "missing-key-binding",
+      "executionStatus": "NOT_RUN",
+      "actualDecision": null,
+      "observedCheck": null,
+      "command": null,
+      "evidence": [],
+      "notes": null
+    }
+  ]
+}

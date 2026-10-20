@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "kind": "unsigned-business-fixture",
+  "scenarioId": "training-completion-v1",
+  "issuer": {
+    "id": "https://training.example/issuers/1",
+    "name": "Example研修社"
+  },
+  "verifier": {
+    "id": "https://employer.example/verifier",
+    "name": "Example採用社"
+  },
+  "claims": {
+    "name": "山田花子",
+    "courseId": "SEC-101",
+    "completedOn": "2026-09-30",
+    "email": "hanako@example.com"
+  },
+  "presentation": {
+    "requiredClaims": [
+      "name",
+      "courseId",
+      "completedOn"
+    ],
+    "undisclosedClaims": [
+      "email"
+    ],
+    "holderBindingRequired": true
+  },
+  "acceptance": {
+    "acceptedIssuerIds": [
+      "https://training.example/issuers/1"
+    ],
+    "acceptedCourseIds": [
+      "SEC-101"
+    ],
+    "expectedApplicantName": "山田花子",
+    "issuerKeyTrust": "preconfigured-out-of-band"
+  },
+  "timingSecondsRelativeToT0": {
+    "valid": {
+      "issuedAt": -60,
+      "expiresAt": 3600
+    },
+    "expired": {
+      "issuedAt": -7200,
+      "expiresAt": -3600
+    }
+  }
+}
