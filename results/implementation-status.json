@@ -1,15 +1,15 @@
 {
   "schemaVersion": 1,
   "scenarioId": "training-completion-v1",
-  "recordedAt": "2026-10-20T10:05:16.031764+00:00",
-  "sampleCommit": "08ee8562fb441f9274b4a087acf0cb753a53f36b",
+  "recordedAt": "2026-10-20T10:11:30.186717+00:00",
+  "sampleCommit": "4d11a27656dae1270256906a44d8b0d60320f7b0",
   "environment": {
     "os": "macOS-26.3.1-arm64-arm-64bit-Mach-O",
     "architecture": "arm64",
     "python": "3.14.8",
     "dockerServer": "29.3.1"
   },
-  "procivisLocalImageId": "sha256:d05d8d561d2152a9a26f0544bc889704ec6d8d2a1b410d6802ea864b61206846",
+  "procivisLocalImageId": "sha256:aa6801fa62df93a61a680cd67ff772add55e857fd268c977c429a5f47d383eb8",
   "procivisNativeWallet": {
     "executionStatus": "COMPLETED",
     "ossStatus": "ACCEPTED",
@@ -26,6 +26,20 @@
   "holderKeyStorage": "Local ephemeral server memory or PostgreSQL; controlled test client memory for Procivis mutations",
   "implementations": [
     {
+      "runMetadata": {
+        "completedAt": "2026-10-20T10:11:02.505469+00:00",
+        "sampleCommit": "4d11a27656dae1270256906a44d8b0d60320f7b0",
+        "sampleCodeSha256": "08cd2cb79b789f0a78ff415d721ac866e849f9931c8692188c68dc3af8d68599",
+        "runningImageIds": {
+          "issuer": "sha256:95dbdb98560af5fbd3511a21e3c928d86550c2990ca40dd81ba7ab99aec81b92",
+          "wallet": "sha256:1a3fe551e1e7728be5a954663e64d67fb82fe14c7b6c2090eccec907f0fe0177",
+          "verifier": "sha256:2e8581019531c2efa17a2c086b9c76ee7fee4bb5ee68369e2ea1864733039e9a"
+        },
+        "os": "macOS-26.3.1-arm64-arm-64bit-Mach-O",
+        "architecture": "arm64",
+        "python": "3.14.8",
+        "dockerServer": "29.3.1"
+      },
       "id": "walt-id",
       "status": "MEASURED_WITH_LIMITATIONS",
       "version": "v1.2.0",
@@ -335,6 +349,19 @@
       ]
     },
     {
+      "runMetadata": {
+        "completedAt": "2026-10-20T10:11:30.116924+00:00",
+        "sampleCommit": "4d11a27656dae1270256906a44d8b0d60320f7b0",
+        "sampleCodeSha256": "08cd2cb79b789f0a78ff415d721ac866e849f9931c8692188c68dc3af8d68599",
+        "runningImageIds": {
+          "core": "sha256:aa6801fa62df93a61a680cd67ff772add55e857fd268c977c429a5f47d383eb8",
+          "database": "sha256:7e32e9833a6fb1c92c32552794cb6ed569d51b445a54907d35fc112ef39684db"
+        },
+        "os": "macOS-26.3.1-arm64-arm-64bit-Mach-O",
+        "architecture": "arm64",
+        "python": "3.14.8",
+        "dockerServer": "29.3.1"
+      },
       "id": "procivis-one",
       "status": "MEASURED_WITH_LIMITATIONS",
       "version": "v1.87.2",
