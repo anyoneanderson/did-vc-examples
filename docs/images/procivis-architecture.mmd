@@ -1,0 +1,41 @@
+---
+config:
+  theme: base
+  themeVariables:
+    fontFamily: 'Hiragino Sans, sans-serif'
+    fontSize: 18px
+    clusterBkg: '#f8fafc'
+    clusterBorder: '#94a3b8'
+    lineColor: '#475569'
+    edgeLabelBackground: '#ffffff'
+  flowchart:
+    wrappingWidth: 420
+    nodeSpacing: 35
+    rankSpacing: 55
+---
+flowchart TB
+  subgraph host["読者のPC"]
+    direction TB
+    python["教材のPython<br/>procivis-one/run.py<br/>API操作・業務条件の確認<br/>後半の10ケースでは保有者役も担当"]
+    subgraph docker["Docker：Coreとデータベースの2コンテナ"]
+      direction TB
+      subgraph core["Procivis One Core：1つのAPIコンテナ"]
+        api["共通のAPI入口：18104<br/>処理ごとにAPIパスが異なる"]
+        issuer["発行機能<br/>修了証の作成・発行"]
+        wallet["ウォレット機能<br/>修了証の受領・保管・提示"]
+        verifier["検証機能<br/>提示要求の作成・証明の検証"]
+        api --- issuer
+        api --- wallet
+        api --- verifier
+      end
+      db[("PostgreSQL<br/>鍵・証明・処理の状態を保存<br/>PC側へポートを公開しない")]
+      api <-->|"Coreがデータを読み書き"| db
+    end
+    python -->|"各機能のAPIを呼び出す"| api
+  end
+  classDef tutorial fill:#fff4dd,stroke:#a66b10,color:#352508
+  classDef service fill:#eaf2ff,stroke:#3264a5,color:#142a49
+  classDef storage fill:#edf7ef,stroke:#387047,color:#183923
+  class python tutorial
+  class api,issuer,wallet,verifier service
+  class db storage

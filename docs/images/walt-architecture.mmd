@@ -1,0 +1,35 @@
+---
+config:
+  theme: base
+  themeVariables:
+    fontFamily: 'Hiragino Sans, sans-serif'
+    fontSize: 18px
+    clusterBkg: '#f8fafc'
+    clusterBorder: '#94a3b8'
+    lineColor: '#475569'
+    edgeLabelBackground: '#ffffff'
+  flowchart:
+    wrappingWidth: 420
+    nodeSpacing: 35
+    rankSpacing: 55
+---
+flowchart TB
+  subgraph host["読者のPC"]
+    direction TB
+    python["教材のPython<br/>walt-id/run.py<br/>API操作・業務条件の確認"]
+    subgraph docker["Docker：3つのAPIコンテナ"]
+      direction LR
+      issuer["Issuer2：発行者<br/>研修会社の修了証を発行<br/>API・Swagger：18101"]
+      wallet["Wallet2：保有者<br/>証明と鍵の保存・提示データ作成<br/>API・Swagger：18102"]
+      verifier["Verifier2：検証者<br/>提示要求を作成・証明を検証<br/>API・Swagger：18103"]
+    end
+    python -->|"発行の準備を依頼"| issuer
+    python -->|"受領・提示データ作成"| wallet
+    python -->|"要求作成・送信・結果取得"| verifier
+    wallet -->|"修了証を受領"| issuer
+    wallet -->|"提示要求を取得"| verifier
+  end
+  classDef tutorial fill:#fff4dd,stroke:#a66b10,color:#352508
+  classDef service fill:#eaf2ff,stroke:#3264a5,color:#142a49
+  class python tutorial
+  class issuer,wallet,verifier service

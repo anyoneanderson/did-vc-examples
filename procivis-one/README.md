@@ -1,5 +1,7 @@
 # Procivis One Core v1.87.2の比較実験
 
+[アーキテクチャ図と通信の説明](../docs/architecture.md#procivis1つのcoreが3つの機能を提供)
+
 固定コミットからCore APIをDocker内でビルドし、PostgreSQLと一緒に起動します。
 発行者、保有者、検証者の処理は同じCoreプロセスに置き、管理APIで組織と鍵を分けます。
 本番サービスの組織間分離を検証する構成ではありません。
