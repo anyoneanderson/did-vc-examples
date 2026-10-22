@@ -13,18 +13,20 @@ docker compose --profile procivis up -d --build
 .venv/bin/python procivis-one/run.py
 ```
 
+出力の抜粋:
+
 ```text
-native-wallet ACCEPTED
-happy-path COMPLETED ACCEPT ACCEPTED target=True
-tampered-claim COMPLETED REJECT ERROR target=False
-expired COMPLETED REJECT ERROR target=True
-wrong-holder-key COMPLETED REJECT ERROR target=True
-untrusted-issuer COMPLETED REJECT ACCEPTED target=True
-missing-required-claim COMPLETED REJECT ERROR target=True
-wrong-course COMPLETED REJECT ACCEPTED target=True
-wrong-nonce COMPLETED REJECT ERROR target=True
-wrong-audience COMPLETED REJECT ERROR target=True
-missing-key-binding COMPLETED REJECT ERROR target=True
+[2/10] 改ざん (tampered-claim)
+  試す内容: 発行後に研修コードを書き換えて提示します。
+  最終判定: 拒否（期待: 拒否 / 想定どおり）
+  OSSの検証: 拒否（APIの状態名: ERROR）
+  確認できたこと: 要求した必須項目が検証時に揃いませんでした。
+  注意: 狙った検査で拒否されたことまでは確認できていません。
+  今回は必須項目の不足として拒否されました。改ざんの検出に成功した件数には含めません。
+
+結果: 想定どおりの判定 10/10件、狙った検査まで確認 9/10件、実行失敗 0件。
+詳しい結果の保存先: runtime/procivis-results.json
+OSSの状態名がERRORでも、原因を調べて意図した拒否と確認できた場合は、実行失敗には数えません。
 ```
 
 `ERROR`はProcivisのproof requestの状態です。
@@ -33,7 +35,7 @@ missing-key-binding COMPLETED REJECT ERROR target=True
 
 ## 2つの実行経路
 
-最初の`native-wallet`では、Core自身の受領APIと提示APIを使って一往復します。
+最初の通常の一往復では、Core自身の受領APIと提示APIを使って一往復します。
 受領後の証明IDを提示に使い、検証結果にname、courseId、completedOnの3項目が返ることを確認します。
 
 続く10ケースでは、保有者役のPythonクライアントがOpenID4VCIでCoreの発行者から証明を受け取り、OpenID4VPの要求へ応答します。

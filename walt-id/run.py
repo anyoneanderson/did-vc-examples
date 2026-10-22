@@ -6,6 +6,7 @@ import sys
 import time
 from urllib.parse import parse_qs, urlparse
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
+from console import introduction, step, case_start, case_result, summary
 from lab import (ROOT, FIXTURE, CASES, ApiError, request, new_key, did_jwk,
                  compact, unpack, mutate_presentation, business_check)
 
@@ -43,16 +44,22 @@ def run_case(case):
         other = new_key()
         overrides.update(issuerKey={'type': 'jwk', 'jwk': other}, issuerDid=did_jwk(other))
     offer = api(18101, '/issuer2/credential-offers', {'profileId': 'training', 'authMethod': 'PRE_AUTHORIZED', 'runtimeOverrides': overrides})
+    if case_id == 'happy-path':
+        step(1, '研修会社が修了証の発行を準備しました。')
     received = api(18102, path + '/credentials/receive', {'offerUrl': offer['credentialOffer'], 'keyId': key_id})
     credential_id = received['credentialIds'][0]
     stored = api(18102, path + '/credentials/' + credential_id)
     assert stored['credential']['credentialData']['email'] == FIXTURE['claims']['email']
+    if case_id == 'happy-path':
+        step(2, '受講者のウォレットが、メールアドレスを含む修了証を受け取りました。')
     session = api(18103, '/verification-session/create', {'flow_type': 'cross_device', 'core_flow': {
         'expiration_duration': 'PT5M', 'retention_duration': 'PT1H',
         'dcql_query': {'credentials': [{'id': 'training', 'format': 'dc+sd-jwt',
             'meta': {'vct_values': ['https://training.example/credentials/completion']},
             'require_cryptographic_holder_binding': True,
             'claims': [{'path': [key]} for key in FIXTURE['presentation']['requiredClaims']]}]}}})
+    if case_id == 'happy-path':
+        step(3, '採用企業が氏名・研修コード・修了日の提示を要求しました。')
     url = session['bootstrapAuthorizationRequestUrl']
     vp = api(18102, path + '/credentials/present/build-vp-token', {'requestUrl': url, 'selectedCredentialIds': {'training': [credential_id]}})
     tokens = json.loads(vp['vpToken'])
@@ -64,6 +71,8 @@ def run_case(case):
     disclosed = {value[1]: value[2] for value in disclosures}
     assert 'email' not in issuer and 'email' not in disclosed
     assert FIXTURE['claims']['email'] not in compact(issuer) + compact(disclosures)
+    if case_id == 'happy-path':
+        step(4, 'ウォレットが作った提示データに、メールアドレスが含まれないことを確認しました。')
     # Same transport for every case, including intentionally invalid tokens.
     params = {k: v[0] for k, v in parse_qs(urlparse(session['fullAuthorizationRequestUrl']).query).items()}
     http_status = 200
@@ -108,9 +117,11 @@ def run_case(case):
 
 
 def main():
+    introduction('walt.id')
     (ROOT / 'runtime/walt-results.json').unlink(missing_ok=True)
     results = []
-    for case in CASES['cases']:
+    for index, case in enumerate(CASES['cases'], 1):
+        case_start(index, len(CASES['cases']), case)
         try:
             result = run_case(case)
         except Exception as error:
@@ -118,11 +129,12 @@ def main():
             if isinstance(error, ApiError):
                 (ROOT / 'runtime/last-api-error.txt').write_text(error.body)
         results.append(result)
-        print(case['id'], result['executionStatus'], result.get('actualDecision'), result.get('ossStatus', ''), 'target=' + str(result.get('targetCovered')), flush=True)
+        case_result(case, result)
     output = ROOT / 'runtime/walt-results.json'
     output.write_text(json.dumps(results, ensure_ascii=False, indent=2) + '\n')
     from lab import run_metadata
     (ROOT / 'runtime/walt-run-meta.json').write_text(json.dumps(run_metadata('walt'), indent=2) + '\n')
+    summary(CASES['cases'], results, 'runtime/walt-results.json')
     return 0 if all(r['executionStatus'] == 'COMPLETED' and r['actualDecision'] == c['expectedDecision'] for r,c in zip(results, CASES['cases'])) else 1
 
 if __name__ == '__main__':

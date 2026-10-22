@@ -13,17 +13,20 @@ docker compose --profile walt up -d
 .venv/bin/python walt-id/run.py
 ```
 
+出力の抜粋:
+
 ```text
-happy-path COMPLETED ACCEPT SUCCESSFUL target=True
-tampered-claim COMPLETED REJECT FAILED target=True
-expired COMPLETED REJECT FAILED target=True
-wrong-holder-key COMPLETED REJECT FAILED target=True
-untrusted-issuer COMPLETED REJECT SUCCESSFUL target=True
-missing-required-claim COMPLETED REJECT SUCCESSFUL target=True
-wrong-course COMPLETED REJECT SUCCESSFUL target=True
-wrong-nonce COMPLETED REJECT FAILED target=True
-wrong-audience COMPLETED REJECT FAILED target=True
-missing-key-binding COMPLETED REJECT FAILED target=False
+[10/10] 保有者確認なし (missing-key-binding)
+  試す内容: 保有者の鍵で署名した提示の証明（Key Binding JWT）を付けずに送ります。
+  最終判定: 拒否（期待: 拒否 / 想定どおり）
+  OSSの検証: 拒否（APIの状態名: FAILED）
+  確認できたこと: 提示データを読み取る段階で、形式エラーになりました。
+  注意: 狙った検査で拒否されたことまでは確認できていません。
+  形式エラーで止まったため、保有者の鍵を確認する検査の成功件数には含めません。
+
+結果: 想定どおりの判定 10/10件、狙った検査まで確認 9/10件、実行失敗 0件。
+詳しい結果の保存先: runtime/walt-results.json
+OSSの状態名がERRORでも、原因を調べて意図した拒否と確認できた場合は、実行失敗には数えません。
 ```
 
 ## 処理の順序
@@ -44,7 +47,8 @@ did:jwkには公開鍵が含まれるため、この実験ではDIDの固定が�
 提示全体のハッシュや保有者署名が先に失敗することを避け、発行者が署名した開示値のダイジェストとの不一致を調べるためです。
 
 Key Binding JWTを取り除くとHTTP 400で拒否されますが、返る理由はJWSの構文エラーです。
-したがって、この1件は保有者鍵の検査に到達した結果として数えず、`target=False`としています。
+したがって、この1件は保有者鍵の検査に到達した結果として数えず、その理由を出力します。
+保存するJSONでは`targetCovered: false`で区別します。
 改ざん時のHTTP 503についても[結果](../docs/results.md)を参照してください。
 
 ## 保存と停止

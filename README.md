@@ -41,17 +41,22 @@ docker compose --profile procivis up -d --build
 `prepare.py`は設定が既にある場合は鍵を更新せず、`runtime/`に置いた鍵や認証情報を再利用します。
 発行時に含めたemailを提示から外し、name、courseId、completedOnだけを採用企業へ渡します。
 
-出力例:
+出力には、発行・受領・提示の進行に続いて、各ケースで何を試すか、最終判定とその理由を表示します。
+例えば、署名の検証を通っても、採用企業が信頼していない発行者の修了証は教材側で拒否します。
 
 ```text
-happy-path COMPLETED ACCEPT SUCCESSFUL target=True
-...
-missing-key-binding COMPLETED REJECT FAILED target=False
+[5/10] 信用しない発行者 (untrusted-issuer)
+  試す内容: 採用企業が信頼対象に登録していない発行者の修了証を提示します。
+  最終判定: 拒否（期待: 拒否 / 想定どおり）
+  OSSの検証: 受理（APIの状態名: ACCEPTED）
+  採用企業の条件を調べる教材側の処理で、受け入れを拒否しました。
+  確認できたこと: 発行者が、採用企業の信頼対象に登録した発行者と一致しません。
 ```
 
-Procivisでは最初に`native-wallet ACCEPTED`を表示します。
-`SUCCESSFUL`と`ACCEPTED`は各OSSの状態名であり、隣の`ACCEPT`と`REJECT`が業務条件を含めた教材の最終判定です。
-`target=False`は、拒否されたものの、予定した検査の成功として数えられなかったケースを示します。
+これはProcivisの出力例です。
+意図した拒否を確認できたケースと、通信障害などで検証を完了できない「実行失敗」を区別します。
+拒否されたものの、狙った検査まで確認できなかったケースには、その理由を表示します。
+最後に、想定どおりの判定件数と、狙った検査まで確認できた件数を別々に集計します。
 詳しい手順と出力は[walt.id](walt-id/README.md)と[Procivis](procivis-one/README.md)を参照してください。
 
 生成した結果は`runtime/walt-results.json`と`runtime/procivis-results.json`へ保存します。

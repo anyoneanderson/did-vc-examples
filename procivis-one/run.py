@@ -11,6 +11,7 @@ from urllib.parse import parse_qs, urlparse
 import urllib.request
 from jwcrypto import jwk, jwe
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
+from console import introduction, step, case_start, case_result, summary, say
 from lab import (ROOT, FIXTURE, CASES, ApiError, request, new_key, public_key,
                  compact, b64, unb64, sign_jwt, unpack, mutate_presentation, business_check)
 BASE = 'http://localhost:18104'
@@ -66,18 +67,23 @@ def proof_request(context):
 
 
 def native_roundtrip():
+    say('Procivis自身のウォレット機能で、通常の一往復を確認します。')
     context = setup('happy-path')
+    step(1, '研修会社が修了証の発行を準備しました。')
     org = api('/api/organisation/v1', {})['id']
     holder = identity(org, 'holder')
     invite = api('/api/interaction/v1/handle-invitation', {'organisationId': org,
         'transport': ['HTTP'], 'url': context['offerUrl']})
     held = api('/api/interaction/v1/issuance-accept', {'identifierId': holder, 'interactionId': invite['interactionId']})['id']
+    step(2, '受講者のウォレットが、発行された修了証を受け取りました。')
     proof, url = proof_request(context)
+    step(3, '採用企業が氏名・研修コード・修了日の提示を要求しました。')
     invitation = api('/api/interaction/v1/handle-invitation', {'organisationId': org, 'transport': ['HTTP'], 'url': url})
     definition = api('/api/proof-request/v2/' + invitation['proofId'] + '/presentation-definition')
     query = next(iter(definition['credentialQueries']))
     api('/api/interaction/v2/presentation-submit', {'interactionId': invitation['interactionId'],
         'submission': {query: [{'credentialId': held}]}})
+    step(4, '受講者のウォレットが、要求に応じて修了証を提示しました。')
     result = api('/api/proof-request/v1/' + proof)
     claims = {c['path']: c['value'] for c in result['proofInputs'][0]['claims']}
     assert result['state'] == 'ACCEPTED'
@@ -179,11 +185,15 @@ def run_case(case):
 
 
 def main():
+    introduction('Procivis One Core')
     (ROOT / 'runtime/procivis-results.json').unlink(missing_ok=True)
     native = native_roundtrip()
-    print('native-wallet', native['ossStatus'], flush=True)
+    step(5, '採用企業の検証APIが受理し、氏名・研修コード・修了日の3項目を返しました。')
+    say('ここからは保有者役を検証用Pythonクライアントに替えて、10ケースを試します。')
+    say('発行と検証には引き続きProcivisを使い、提示する値や鍵を1条件ずつ変えます。')
     results = []
-    for case in CASES['cases']:
+    for index, case in enumerate(CASES['cases'], 1):
+        case_start(index, len(CASES['cases']), case)
         try:
             result = run_case(case)
         except Exception as error:
@@ -191,10 +201,11 @@ def main():
             if isinstance(error, ApiError):
                 (ROOT / 'runtime/last-api-error.txt').write_text(error.body)
         results.append(result)
-        print(case['id'], result['executionStatus'], result.get('actualDecision'), result.get('ossStatus', ''), 'target=' + str(result.get('targetCovered')), flush=True)
+        case_result(case, result)
     (ROOT / 'runtime/procivis-results.json').write_text(json.dumps({'nativeWallet': native, 'cases': results}, ensure_ascii=False, indent=2) + '\n')
     from lab import run_metadata
     (ROOT / 'runtime/procivis-run-meta.json').write_text(json.dumps(run_metadata('procivis'), indent=2) + '\n')
+    summary(CASES['cases'], results, 'runtime/procivis-results.json')
     return 0 if all(r['executionStatus'] == 'COMPLETED' and r['actualDecision'] == c['expectedDecision'] for r,c in zip(results, CASES['cases'])) else 1
 
 if __name__ == '__main__':
