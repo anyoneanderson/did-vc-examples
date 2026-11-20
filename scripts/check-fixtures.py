@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check preparation data only; never issue or verify credentials."""
+"""Validate fixtures and result metadata; does not run the OSS integration."""
 import json
 import sys
 from datetime import date
@@ -50,9 +50,16 @@ def main():
     for group in [i["cases"] for i in implementations] + [template["cases"]]:
         require(len(group) == len(ids) and {c["caseId"] for c in group} == set(ids), "result coverage mismatch")
         for case in group:
-            require(case["executionStatus"] == "NOT_RUN" and case["actualDecision"] is None and case["evidence"] == [], "preparation must not claim runtime results")
+            if case["executionStatus"] == "NOT_RUN":
+                require(case["actualDecision"] is None and case["evidence"] == [], "unexecuted case claims a result")
+            elif case["executionStatus"] == "COMPLETED":
+                require(case["actualDecision"] in {"ACCEPT", "REJECT"} and case["evidence"], "completed case lacks evidence")
+                target = next(c["targetCheck"] for c in plan["cases"] if c["id"] == case["caseId"])
+                require(case["targetCovered"] == (case["observedCheck"] == target), "target coverage contradicts observation")
+            else:
+                require(case["executionStatus"] in {"ERROR", "UNSUPPORTED"} and case["actualDecision"] is None, "invalid result state")
     print(f"PASS: fixture consistency ({len(claims)} claims, {len(ids)} planned cases, {len(implementations)} implementations)")
-    print("NOTE: no credential issuance, signature verification, or OSS integration was run.")
+    print("NOTE: this command checks files only. Run the OSS scripts to reproduce runtime results.")
 
 if __name__ == "__main__":
     try:

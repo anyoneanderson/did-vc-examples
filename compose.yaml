@@ -1,0 +1,38 @@
+name: did-vc-examples
+services:
+  issuer:
+    profiles: [walt]
+    image: waltid/issuer-api2:1.2.0@sha256:95dbdb98560af5fbd3511a21e3c928d86550c2990ca40dd81ba7ab99aec81b92
+    ports: ["127.0.0.1:18101:18101", "127.0.0.1:18102:18102", "127.0.0.1:18103:18103"]
+    volumes: ["./runtime/walt/issuer:/waltid-issuer-api2/config:ro"]
+  wallet:
+    profiles: [walt]
+    image: waltid/wallet-api2:1.2.0@sha256:1a3fe551e1e7728be5a954663e64d67fb82fe14c7b6c2090eccec907f0fe0177
+    network_mode: service:issuer
+    volumes: ["./runtime/walt/wallet:/waltid-wallet-api2/config:ro"]
+  verifier:
+    profiles: [walt]
+    image: waltid/verifier-api2:1.2.0@sha256:2e8581019531c2efa17a2c086b9c76ee7fee4bb5ee68369e2ea1864733039e9a
+    network_mode: service:issuer
+    volumes: ["./runtime/walt/verifier:/waltid-verifier-api2/config:ro"]
+  database:
+    profiles: [procivis]
+    image: postgres:18.3@sha256:7e32e9833a6fb1c92c32552794cb6ed569d51b445a54907d35fc112ef39684db
+    env_file: ./runtime/procivis/db.env
+    tmpfs: [/var/lib/postgresql]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U core -d core"]
+      interval: 2s
+      timeout: 2s
+      retries: 30
+  core:
+    profiles: [procivis]
+    image: did-vc-examples-procivis:v1.87.2
+    build:
+      context: ./runtime/upstream/one-core
+      dockerfile: ../../../procivis-one/Dockerfile
+    ports: ["127.0.0.1:18104:18104"]
+    volumes: ["./runtime/procivis:/lab:ro"]
+    depends_on:
+      database:
+        condition: service_healthy

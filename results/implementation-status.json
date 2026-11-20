@@ -1,141 +1,600 @@
 {
   "schemaVersion": 1,
+  "scenarioId": "training-completion-v1",
+  "recordedAt": "2026-10-20T10:11:30.186717+00:00",
+  "sampleCommit": "4d11a27656dae1270256906a44d8b0d60320f7b0",
+  "environment": {
+    "os": "macOS-26.3.1-arm64-arm-64bit-Mach-O",
+    "architecture": "arm64",
+    "python": "3.14.8",
+    "dockerServer": "29.3.1"
+  },
+  "procivisLocalImageId": "sha256:aa6801fa62df93a61a680cd67ff772add55e857fd268c977c429a5f47d383eb8",
+  "procivisNativeWallet": {
+    "executionStatus": "COMPLETED",
+    "ossStatus": "ACCEPTED",
+    "holder": "Procivis Core wallet API",
+    "verifiedClaimNames": [
+      "completedOn",
+      "courseId",
+      "name"
+    ],
+    "wireInspection": "Native encrypted VP not decrypted by harness; controlled-client cases inspect plaintext before encryption."
+  },
+  "clockSkewSeconds": 2,
+  "issuerTrustSetup": "Out-of-band pin of fresh did:jwk (walt) / did:key (Procivis)",
+  "holderKeyStorage": "Local ephemeral server memory or PostgreSQL; controlled test client memory for Procivis mutations",
   "implementations": [
     {
+      "runMetadata": {
+        "completedAt": "2026-10-20T10:11:02.505469+00:00",
+        "sampleCommit": "4d11a27656dae1270256906a44d8b0d60320f7b0",
+        "sampleCodeSha256": "08cd2cb79b789f0a78ff415d721ac866e849f9931c8692188c68dc3af8d68599",
+        "runningImageIds": {
+          "issuer": "sha256:95dbdb98560af5fbd3511a21e3c928d86550c2990ca40dd81ba7ab99aec81b92",
+          "wallet": "sha256:1a3fe551e1e7728be5a954663e64d67fb82fe14c7b6c2090eccec907f0fe0177",
+          "verifier": "sha256:2e8581019531c2efa17a2c086b9c76ee7fee4bb5ee68369e2ea1864733039e9a"
+        },
+        "os": "macOS-26.3.1-arm64-arm-64bit-Mach-O",
+        "architecture": "arm64",
+        "python": "3.14.8",
+        "dockerServer": "29.3.1"
+      },
       "id": "walt-id",
-      "release": null,
-      "commit": null,
-      "containerDigest": null,
-      "status": "NOT_RUN",
+      "status": "MEASURED_WITH_LIMITATIONS",
+      "version": "v1.2.0",
+      "commit": "ef516ecec4c79fd9fba6f1e8b226b52a4e8cf790",
       "cases": [
         {
           "caseId": "happy-path",
-          "executionStatus": "NOT_RUN",
-          "actualDecision": null,
-          "evidence": []
+          "executionStatus": "COMPLETED",
+          "expectedDecision": "ACCEPT",
+          "actualDecision": "ACCEPT",
+          "observedCheck": "all",
+          "targetCovered": true,
+          "ossStatus": "SUCCESSFUL",
+          "httpStatus": 200,
+          "policies": {
+            "dc+sd-jwt/audience-check": true,
+            "dc+sd-jwt/kb-jwt_signature": true,
+            "dc+sd-jwt/nonce-check": true,
+            "dc+sd-jwt/sd_hash-check": true,
+            "dc+sd-jwt/kb-jwt_iat-check": true,
+            "dc+sd-jwt/exp-check": true,
+            "dc+sd-jwt/nbf-check": true,
+            "dc+sd-jwt/transaction-data-hash-check": true
+          },
+          "emailUndisclosed": true,
+          "disclosedClaims": [
+            "completedOn",
+            "courseId",
+            "name"
+          ],
+          "evidence": [
+            "issuer2 offer redeemed by wallet2",
+            "stored credential includes email",
+            "verifier2 session inspected"
+          ],
+          "command": ".venv/bin/python walt-id/run.py"
         },
         {
           "caseId": "tampered-claim",
-          "executionStatus": "NOT_RUN",
-          "actualDecision": null,
-          "evidence": []
+          "executionStatus": "COMPLETED",
+          "expectedDecision": "REJECT",
+          "actualDecision": "REJECT",
+          "observedCheck": "integrity",
+          "targetCovered": true,
+          "ossStatus": "FAILED",
+          "httpStatus": 503,
+          "policies": {},
+          "emailUndisclosed": true,
+          "disclosedClaims": [
+            "completedOn",
+            "courseId",
+            "name"
+          ],
+          "evidence": [
+            "issuer2 offer redeemed by wallet2",
+            "stored credential includes email",
+            "verifier2 session inspected"
+          ],
+          "command": ".venv/bin/python walt-id/run.py"
         },
         {
           "caseId": "expired",
-          "executionStatus": "NOT_RUN",
-          "actualDecision": null,
-          "evidence": []
+          "executionStatus": "COMPLETED",
+          "expectedDecision": "REJECT",
+          "actualDecision": "REJECT",
+          "observedCheck": "validity",
+          "targetCovered": true,
+          "ossStatus": "FAILED",
+          "httpStatus": 400,
+          "policies": {
+            "dc+sd-jwt/audience-check": true,
+            "dc+sd-jwt/kb-jwt_signature": true,
+            "dc+sd-jwt/nonce-check": true,
+            "dc+sd-jwt/sd_hash-check": true,
+            "dc+sd-jwt/kb-jwt_iat-check": true,
+            "dc+sd-jwt/exp-check": false,
+            "dc+sd-jwt/nbf-check": true,
+            "dc+sd-jwt/transaction-data-hash-check": true
+          },
+          "emailUndisclosed": true,
+          "disclosedClaims": [
+            "completedOn",
+            "courseId",
+            "name"
+          ],
+          "evidence": [
+            "issuer2 offer redeemed by wallet2",
+            "stored credential includes email",
+            "verifier2 session inspected"
+          ],
+          "command": ".venv/bin/python walt-id/run.py"
         },
         {
           "caseId": "wrong-holder-key",
-          "executionStatus": "NOT_RUN",
-          "actualDecision": null,
-          "evidence": []
+          "executionStatus": "COMPLETED",
+          "expectedDecision": "REJECT",
+          "actualDecision": "REJECT",
+          "observedCheck": "holder-binding",
+          "targetCovered": true,
+          "ossStatus": "FAILED",
+          "httpStatus": 400,
+          "policies": {
+            "dc+sd-jwt/audience-check": true,
+            "dc+sd-jwt/kb-jwt_signature": false,
+            "dc+sd-jwt/nonce-check": true,
+            "dc+sd-jwt/sd_hash-check": true,
+            "dc+sd-jwt/kb-jwt_iat-check": true,
+            "dc+sd-jwt/exp-check": true,
+            "dc+sd-jwt/nbf-check": true,
+            "dc+sd-jwt/transaction-data-hash-check": true
+          },
+          "emailUndisclosed": true,
+          "disclosedClaims": [
+            "completedOn",
+            "courseId",
+            "name"
+          ],
+          "evidence": [
+            "issuer2 offer redeemed by wallet2",
+            "stored credential includes email",
+            "verifier2 session inspected"
+          ],
+          "command": ".venv/bin/python walt-id/run.py"
         },
         {
           "caseId": "untrusted-issuer",
-          "executionStatus": "NOT_RUN",
-          "actualDecision": null,
-          "evidence": []
+          "executionStatus": "COMPLETED",
+          "expectedDecision": "REJECT",
+          "actualDecision": "REJECT",
+          "observedCheck": "issuer-trust",
+          "targetCovered": true,
+          "ossStatus": "SUCCESSFUL",
+          "httpStatus": 200,
+          "policies": {
+            "dc+sd-jwt/audience-check": true,
+            "dc+sd-jwt/kb-jwt_signature": true,
+            "dc+sd-jwt/nonce-check": true,
+            "dc+sd-jwt/sd_hash-check": true,
+            "dc+sd-jwt/kb-jwt_iat-check": true,
+            "dc+sd-jwt/exp-check": true,
+            "dc+sd-jwt/nbf-check": true,
+            "dc+sd-jwt/transaction-data-hash-check": true
+          },
+          "emailUndisclosed": true,
+          "disclosedClaims": [
+            "completedOn",
+            "courseId",
+            "name"
+          ],
+          "evidence": [
+            "issuer2 offer redeemed by wallet2",
+            "stored credential includes email",
+            "verifier2 session inspected"
+          ],
+          "command": ".venv/bin/python walt-id/run.py"
         },
         {
           "caseId": "missing-required-claim",
-          "executionStatus": "NOT_RUN",
-          "actualDecision": null,
-          "evidence": []
+          "executionStatus": "COMPLETED",
+          "expectedDecision": "REJECT",
+          "actualDecision": "REJECT",
+          "observedCheck": "required-claims",
+          "targetCovered": true,
+          "ossStatus": "SUCCESSFUL",
+          "httpStatus": 200,
+          "policies": {
+            "dc+sd-jwt/audience-check": true,
+            "dc+sd-jwt/kb-jwt_signature": true,
+            "dc+sd-jwt/nonce-check": true,
+            "dc+sd-jwt/sd_hash-check": true,
+            "dc+sd-jwt/kb-jwt_iat-check": true,
+            "dc+sd-jwt/exp-check": true,
+            "dc+sd-jwt/nbf-check": true,
+            "dc+sd-jwt/transaction-data-hash-check": true
+          },
+          "emailUndisclosed": true,
+          "disclosedClaims": [
+            "completedOn",
+            "courseId"
+          ],
+          "evidence": [
+            "issuer2 offer redeemed by wallet2",
+            "stored credential includes email",
+            "verifier2 session inspected"
+          ],
+          "command": ".venv/bin/python walt-id/run.py"
         },
         {
           "caseId": "wrong-course",
-          "executionStatus": "NOT_RUN",
-          "actualDecision": null,
-          "evidence": []
+          "executionStatus": "COMPLETED",
+          "expectedDecision": "REJECT",
+          "actualDecision": "REJECT",
+          "observedCheck": "business-policy",
+          "targetCovered": true,
+          "ossStatus": "SUCCESSFUL",
+          "httpStatus": 200,
+          "policies": {
+            "dc+sd-jwt/audience-check": true,
+            "dc+sd-jwt/kb-jwt_signature": true,
+            "dc+sd-jwt/nonce-check": true,
+            "dc+sd-jwt/sd_hash-check": true,
+            "dc+sd-jwt/kb-jwt_iat-check": true,
+            "dc+sd-jwt/exp-check": true,
+            "dc+sd-jwt/nbf-check": true,
+            "dc+sd-jwt/transaction-data-hash-check": true
+          },
+          "emailUndisclosed": true,
+          "disclosedClaims": [
+            "completedOn",
+            "courseId",
+            "name"
+          ],
+          "evidence": [
+            "issuer2 offer redeemed by wallet2",
+            "stored credential includes email",
+            "verifier2 session inspected"
+          ],
+          "command": ".venv/bin/python walt-id/run.py"
         },
         {
           "caseId": "wrong-nonce",
-          "executionStatus": "NOT_RUN",
-          "actualDecision": null,
-          "evidence": []
+          "executionStatus": "COMPLETED",
+          "expectedDecision": "REJECT",
+          "actualDecision": "REJECT",
+          "observedCheck": "request-binding",
+          "targetCovered": true,
+          "ossStatus": "FAILED",
+          "httpStatus": 400,
+          "policies": {
+            "dc+sd-jwt/audience-check": true,
+            "dc+sd-jwt/kb-jwt_signature": true,
+            "dc+sd-jwt/nonce-check": false,
+            "dc+sd-jwt/sd_hash-check": true,
+            "dc+sd-jwt/kb-jwt_iat-check": true,
+            "dc+sd-jwt/exp-check": true,
+            "dc+sd-jwt/nbf-check": true,
+            "dc+sd-jwt/transaction-data-hash-check": true
+          },
+          "emailUndisclosed": true,
+          "disclosedClaims": [
+            "completedOn",
+            "courseId",
+            "name"
+          ],
+          "evidence": [
+            "issuer2 offer redeemed by wallet2",
+            "stored credential includes email",
+            "verifier2 session inspected"
+          ],
+          "command": ".venv/bin/python walt-id/run.py"
         },
         {
           "caseId": "wrong-audience",
-          "executionStatus": "NOT_RUN",
-          "actualDecision": null,
-          "evidence": []
+          "executionStatus": "COMPLETED",
+          "expectedDecision": "REJECT",
+          "actualDecision": "REJECT",
+          "observedCheck": "request-binding",
+          "targetCovered": true,
+          "ossStatus": "FAILED",
+          "httpStatus": 400,
+          "policies": {
+            "dc+sd-jwt/audience-check": false,
+            "dc+sd-jwt/kb-jwt_signature": true,
+            "dc+sd-jwt/nonce-check": true,
+            "dc+sd-jwt/sd_hash-check": true,
+            "dc+sd-jwt/kb-jwt_iat-check": true,
+            "dc+sd-jwt/exp-check": true,
+            "dc+sd-jwt/nbf-check": true,
+            "dc+sd-jwt/transaction-data-hash-check": true
+          },
+          "emailUndisclosed": true,
+          "disclosedClaims": [
+            "completedOn",
+            "courseId",
+            "name"
+          ],
+          "evidence": [
+            "issuer2 offer redeemed by wallet2",
+            "stored credential includes email",
+            "verifier2 session inspected"
+          ],
+          "command": ".venv/bin/python walt-id/run.py"
         },
         {
           "caseId": "missing-key-binding",
-          "executionStatus": "NOT_RUN",
-          "actualDecision": null,
-          "evidence": []
+          "executionStatus": "COMPLETED",
+          "expectedDecision": "REJECT",
+          "actualDecision": "REJECT",
+          "observedCheck": "presentation-parser",
+          "targetCovered": false,
+          "ossStatus": "FAILED",
+          "httpStatus": 400,
+          "policies": {},
+          "emailUndisclosed": true,
+          "disclosedClaims": [
+            "completedOn",
+            "courseId",
+            "name"
+          ],
+          "evidence": [
+            "issuer2 offer redeemed by wallet2",
+            "stored credential includes email",
+            "verifier2 session inspected"
+          ],
+          "command": ".venv/bin/python walt-id/run.py"
         }
       ]
     },
     {
+      "runMetadata": {
+        "completedAt": "2026-10-20T10:11:30.116924+00:00",
+        "sampleCommit": "4d11a27656dae1270256906a44d8b0d60320f7b0",
+        "sampleCodeSha256": "08cd2cb79b789f0a78ff415d721ac866e849f9931c8692188c68dc3af8d68599",
+        "runningImageIds": {
+          "core": "sha256:aa6801fa62df93a61a680cd67ff772add55e857fd268c977c429a5f47d383eb8",
+          "database": "sha256:7e32e9833a6fb1c92c32552794cb6ed569d51b445a54907d35fc112ef39684db"
+        },
+        "os": "macOS-26.3.1-arm64-arm-64bit-Mach-O",
+        "architecture": "arm64",
+        "python": "3.14.8",
+        "dockerServer": "29.3.1"
+      },
       "id": "procivis-one",
-      "release": null,
-      "commit": null,
-      "containerDigest": null,
-      "status": "NOT_RUN",
+      "status": "MEASURED_WITH_LIMITATIONS",
+      "version": "v1.87.2",
+      "commit": "8b701da849c8b9ad8a339c76c5191d69548bffff",
       "cases": [
         {
           "caseId": "happy-path",
-          "executionStatus": "NOT_RUN",
-          "actualDecision": null,
-          "evidence": []
+          "executionStatus": "COMPLETED",
+          "actualDecision": "ACCEPT",
+          "expectedDecision": "ACCEPT",
+          "observedCheck": "all",
+          "targetCovered": true,
+          "ossStatus": "ACCEPTED",
+          "httpStatus": 200,
+          "holder": "Python adversarial protocol client",
+          "emailUndisclosed": true,
+          "disclosedClaims": [
+            "completedOn",
+            "courseId",
+            "name"
+          ],
+          "command": ".venv/bin/python procivis-one/run.py",
+          "evidence": [
+            "Procivis issuer credential response",
+            "plaintext VP excludes email",
+            "Procivis verifier proof request inspected"
+          ]
         },
         {
           "caseId": "tampered-claim",
-          "executionStatus": "NOT_RUN",
-          "actualDecision": null,
-          "evidence": []
+          "executionStatus": "COMPLETED",
+          "actualDecision": "REJECT",
+          "expectedDecision": "REJECT",
+          "observedCheck": "required-claims",
+          "targetCovered": false,
+          "ossStatus": "ERROR",
+          "httpStatus": 400,
+          "holder": "Python adversarial protocol client",
+          "emailUndisclosed": true,
+          "disclosedClaims": [
+            "completedOn",
+            "courseId",
+            "name"
+          ],
+          "command": ".venv/bin/python procivis-one/run.py",
+          "evidence": [
+            "Procivis issuer credential response",
+            "plaintext VP excludes email",
+            "Procivis verifier proof request inspected"
+          ]
         },
         {
           "caseId": "expired",
-          "executionStatus": "NOT_RUN",
-          "actualDecision": null,
-          "evidence": []
+          "executionStatus": "COMPLETED",
+          "actualDecision": "REJECT",
+          "expectedDecision": "REJECT",
+          "observedCheck": "validity",
+          "targetCovered": true,
+          "ossStatus": "ERROR",
+          "httpStatus": 400,
+          "holder": "Python adversarial protocol client",
+          "emailUndisclosed": true,
+          "disclosedClaims": [
+            "completedOn",
+            "courseId",
+            "name"
+          ],
+          "command": ".venv/bin/python procivis-one/run.py",
+          "evidence": [
+            "Procivis issuer credential response",
+            "plaintext VP excludes email",
+            "Procivis verifier proof request inspected"
+          ]
         },
         {
           "caseId": "wrong-holder-key",
-          "executionStatus": "NOT_RUN",
-          "actualDecision": null,
-          "evidence": []
+          "executionStatus": "COMPLETED",
+          "actualDecision": "REJECT",
+          "expectedDecision": "REJECT",
+          "observedCheck": "holder-binding",
+          "targetCovered": true,
+          "ossStatus": "ERROR",
+          "httpStatus": 500,
+          "holder": "Python adversarial protocol client",
+          "emailUndisclosed": true,
+          "disclosedClaims": [
+            "completedOn",
+            "courseId",
+            "name"
+          ],
+          "command": ".venv/bin/python procivis-one/run.py",
+          "evidence": [
+            "Procivis issuer credential response",
+            "plaintext VP excludes email",
+            "Procivis verifier proof request inspected"
+          ]
         },
         {
           "caseId": "untrusted-issuer",
-          "executionStatus": "NOT_RUN",
-          "actualDecision": null,
-          "evidence": []
+          "executionStatus": "COMPLETED",
+          "actualDecision": "REJECT",
+          "expectedDecision": "REJECT",
+          "observedCheck": "issuer-trust",
+          "targetCovered": true,
+          "ossStatus": "ACCEPTED",
+          "httpStatus": 200,
+          "holder": "Python adversarial protocol client",
+          "emailUndisclosed": true,
+          "disclosedClaims": [
+            "completedOn",
+            "courseId",
+            "name"
+          ],
+          "command": ".venv/bin/python procivis-one/run.py",
+          "evidence": [
+            "Procivis issuer credential response",
+            "plaintext VP excludes email",
+            "Procivis verifier proof request inspected"
+          ]
         },
         {
           "caseId": "missing-required-claim",
-          "executionStatus": "NOT_RUN",
-          "actualDecision": null,
-          "evidence": []
+          "executionStatus": "COMPLETED",
+          "actualDecision": "REJECT",
+          "expectedDecision": "REJECT",
+          "observedCheck": "required-claims",
+          "targetCovered": true,
+          "ossStatus": "ERROR",
+          "httpStatus": 400,
+          "holder": "Python adversarial protocol client",
+          "emailUndisclosed": true,
+          "disclosedClaims": [
+            "completedOn",
+            "courseId"
+          ],
+          "command": ".venv/bin/python procivis-one/run.py",
+          "evidence": [
+            "Procivis issuer credential response",
+            "plaintext VP excludes email",
+            "Procivis verifier proof request inspected"
+          ]
         },
         {
           "caseId": "wrong-course",
-          "executionStatus": "NOT_RUN",
-          "actualDecision": null,
-          "evidence": []
+          "executionStatus": "COMPLETED",
+          "actualDecision": "REJECT",
+          "expectedDecision": "REJECT",
+          "observedCheck": "business-policy",
+          "targetCovered": true,
+          "ossStatus": "ACCEPTED",
+          "httpStatus": 200,
+          "holder": "Python adversarial protocol client",
+          "emailUndisclosed": true,
+          "disclosedClaims": [
+            "completedOn",
+            "courseId",
+            "name"
+          ],
+          "command": ".venv/bin/python procivis-one/run.py",
+          "evidence": [
+            "Procivis issuer credential response",
+            "plaintext VP excludes email",
+            "Procivis verifier proof request inspected"
+          ]
         },
         {
           "caseId": "wrong-nonce",
-          "executionStatus": "NOT_RUN",
-          "actualDecision": null,
-          "evidence": []
+          "executionStatus": "COMPLETED",
+          "actualDecision": "REJECT",
+          "expectedDecision": "REJECT",
+          "observedCheck": "request-binding",
+          "targetCovered": true,
+          "ossStatus": "ERROR",
+          "httpStatus": 500,
+          "holder": "Python adversarial protocol client",
+          "emailUndisclosed": true,
+          "disclosedClaims": [
+            "completedOn",
+            "courseId",
+            "name"
+          ],
+          "command": ".venv/bin/python procivis-one/run.py",
+          "evidence": [
+            "Procivis issuer credential response",
+            "plaintext VP excludes email",
+            "Procivis verifier proof request inspected"
+          ]
         },
         {
           "caseId": "wrong-audience",
-          "executionStatus": "NOT_RUN",
-          "actualDecision": null,
-          "evidence": []
+          "executionStatus": "COMPLETED",
+          "actualDecision": "REJECT",
+          "expectedDecision": "REJECT",
+          "observedCheck": "request-binding",
+          "targetCovered": true,
+          "ossStatus": "ERROR",
+          "httpStatus": 500,
+          "holder": "Python adversarial protocol client",
+          "emailUndisclosed": true,
+          "disclosedClaims": [
+            "completedOn",
+            "courseId",
+            "name"
+          ],
+          "command": ".venv/bin/python procivis-one/run.py",
+          "evidence": [
+            "Procivis issuer credential response",
+            "plaintext VP excludes email",
+            "Procivis verifier proof request inspected"
+          ]
         },
         {
           "caseId": "missing-key-binding",
-          "executionStatus": "NOT_RUN",
-          "actualDecision": null,
-          "evidence": []
+          "executionStatus": "COMPLETED",
+          "actualDecision": "REJECT",
+          "expectedDecision": "REJECT",
+          "observedCheck": "holder-binding",
+          "targetCovered": true,
+          "ossStatus": "ERROR",
+          "httpStatus": 500,
+          "holder": "Python adversarial protocol client",
+          "emailUndisclosed": true,
+          "disclosedClaims": [
+            "completedOn",
+            "courseId",
+            "name"
+          ],
+          "command": ".venv/bin/python procivis-one/run.py",
+          "evidence": [
+            "Procivis issuer credential response",
+            "plaintext VP excludes email",
+            "Procivis verifier proof request inspected"
+          ]
         }
       ]
     }

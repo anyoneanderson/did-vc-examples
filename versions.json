@@ -1,0 +1,20 @@
+{
+  "walt-id": {
+    "release": "v1.2.0",
+    "repository": "https://github.com/walt-id/waltid-identity.git",
+    "commit": "ef516ecec4c79fd9fba6f1e8b226b52a4e8cf790",
+    "images": {
+      "issuer": "waltid/issuer-api2:1.2.0@sha256:95dbdb98560af5fbd3511a21e3c928d86550c2990ca40dd81ba7ab99aec81b92",
+      "wallet": "waltid/wallet-api2:1.2.0@sha256:1a3fe551e1e7728be5a954663e64d67fb82fe14c7b6c2090eccec907f0fe0177",
+      "verifier": "waltid/verifier-api2:1.2.0@sha256:2e8581019531c2efa17a2c086b9c76ee7fee4bb5ee68369e2ea1864733039e9a"
+    }
+  },
+  "procivis-one": {
+    "release": "v1.87.2",
+    "repository": "https://github.com/procivis/one-core.git",
+    "commit": "8b701da849c8b9ad8a339c76c5191d69548bffff",
+    "rust": "rust:1.95.0-bookworm@sha256:6258907abe69656e41cd992e0b705cdcfabcbbe3db374f92ed2d47121282d4a1",
+    "runtime": "debian:bookworm-slim@sha256:7c7b2c966bc9ee8cedfeef67e0e279108992c77681fa595db4a9d65c06ccc587",
+    "database": "postgres:18.3@sha256:7e32e9833a6fb1c92c32552794cb6ed569d51b445a54907d35fc112ef39684db"
+  }
+}
