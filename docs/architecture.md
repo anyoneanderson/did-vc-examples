@@ -60,14 +60,16 @@ Coreが受理した後の発行者の信頼や研修条件の確認は、walt.id
 教材では、最初の一往復で保有者を別の組織として作りますが、発行者と検証者には同じ識別子を使っています。
 この構成はプロトコルを試すためのもので、実際の研修会社と採用企業の権限分離を検証するものではありません。
 
-CoreにはSwaggerを提供する実装がありますが、2026年10月22日のこの教材のDockerイメージでは、画面用ファイルの組み込みに問題があり、Swaggerは404になります。
+Swaggerの入口は http://localhost:18104/swagger-ui/index.html です。
 API定義は http://localhost:18104/api-docs/openapi.json で取得できます。
-Swaggerの表示修正と画面確認は残作業です。
+初版の教材用Dockerfileでは画面用ファイルを実行ファイルに埋め込めていなかったため、リリースビルドへ変更しています。
+以前のイメージを使っている場合は、[再ビルドとSwaggerの操作手順](../procivis-one/README.md#swaggerでapiを操作する)を参照してください。
 
 ## 起動前の準備と、記事で示す範囲
 
 [scripts/prepare.py](../scripts/prepare.py)が鍵と設定ファイルを生成し、Procivisでは固定版のソースも取得します。
 Docker Composeで起動後、[scripts/wait-ready.py](../scripts/wait-ready.py)が各APIへアクセスし、JSONを取得できる状態まで待ちます。
+ProcivisではSwaggerのHTML、CSS、JavaScriptの取得も確認します。
 起動確認はAPIへの接続確認であり、修了証の発行や検証の成功は、その後の各run.pyで確かめます。
 
 第3回の環境構築の説明では、この構成図と起動結果、SwaggerでのAPI操作を対応させます。

@@ -35,6 +35,47 @@ OSSの状態名がERRORでも、原因を調べて意図した拒否と確認で
 この状態だけで期待通りの拒否と判断せず、同じリクエストIDのログから期限切れや鍵の不一致などの原因を確認します。
 原因が一致しなければ実験自体の`executionStatus`を`ERROR`にし、終了コード1を返します。
 
+## SwaggerでAPIを操作する
+
+起動後、[Swagger UI](http://localhost:18104/swagger-ui/index.html)を開きます。
+APIの定義は[OpenAPI JSON](http://localhost:18104/api-docs/openapi.json)でも取得できます。
+ルートの`http://localhost:18104/`は画面を返さないため、Swaggerのパスまで指定してください。
+
+最初は認証を必要としない`GET /health`で操作を試せます。
+項目を開いて「Try it out」、次に「Execute」を押すと、Coreが応答できる場合は204が表示されます。
+このAPIは応答本文を返しません。
+
+![Procivis One CoreのSwagger UI](../docs/images/procivis-swagger.png)
+
+![SwaggerからGET /healthを実行し、204が返った画面](../docs/images/procivis-swagger-health.png)
+
+2026年11月20日にv1.87.2のローカル環境で撮影しました。
+[修正前後の確認結果](../docs/swagger-verification.md)も記録しています。
+
+管理APIを試す場合は、`runtime/procivis/token`の値をSwaggerの「Authorize」に入力します。
+macOSでは、次のコマンドで値をターミナルへ表示せずにコピーできます。
+
+```sh
+pbcopy < runtime/procivis/token
+```
+
+認証情報はスクリーンショットや公開するログへ含めないでください。
+Swaggerから変更系APIを実行すると、このローカル環境のデータも変更されます。
+
+### 以前のイメージでSwaggerが404になる場合
+
+初版の教材用Dockerfileはデバッグビルドを使っていたため、Swaggerの画面用ファイルが実行ファイルへ埋め込まれていませんでした。
+Procivis公式のDockerfileと同様に`--release`でビルドする構成へ変更しています。
+修正版のコードを取得後、次のコマンドでCoreをビルドし直してください。
+
+```sh
+docker compose --profile procivis up -d --build core
+.venv/bin/python scripts/wait-ready.py procivis
+```
+
+この再ビルドでは、従来のデバッグビルド用とは別に、リリースビルド用の依存物をコンパイルします。
+初回は時間がかかりますが、その後はDockerのビルドキャッシュを利用できます。
+
 ## 2つの実行経路
 
 最初の通常の一往復では、Core自身の受領APIと提示APIを使って一往復します。
@@ -64,7 +105,7 @@ Core自身のウォレットが送る暗号化済み通信はこのクライア�
 共通データの「過去のiatとexpを指定する」手順とは異なりますが、署名済みのexpを書き換えず、正当に発行された証明が期限切れになった状態を作れます。
 
 SQLiteで同一プロセスの発行と受領を試すと受領が完了しなかったため、教材はPostgreSQLを使います。
-初回のRustビルドは数分かかり、依存物の取得状況やCPUで変わります。
+初回はビルド用イメージや依存物の取得とRustのコンパイルを行うため、回線速度やCPU、キャッシュの有無によって待ち時間が大きく変わります。
 
 ## 保存と停止
 
